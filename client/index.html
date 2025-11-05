@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>the puzzler</title>
+</head>
+<body>
+    <div id="join-room">
+        <h1>Join room</h1>
+        <button id="connect-room" enabled>join room </button>
+    </div>
+    <div id="setup-screen">
+        <h1>Puzzle setup</h1>
+        <input type="file" id="image-picker" accept="image/*">
+        <label> Columns: <input type="number" id="cols-input" value="10" min="2" max="50"></label>
+        <label> Rows: <input type="number" id="rows-input" value="10" min="2" max="50"></label>
+        <button id="start-button" disabled>start puzzle</button>
+    </div>
+    <div id="puzzle-canvas" class="hidden">
+        <canvas class="webgl"></canvas>
+    </div>
+    <script type="module" src="./main.js"></script>
+
+</body>
+</html>
