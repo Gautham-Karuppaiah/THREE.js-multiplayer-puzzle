@@ -98,19 +98,6 @@ The client connects to the server at `ws://localhost:2567`. If you change the se
 const client = new Colyseus.Client("ws://localhost:YOUR_PORT")
 ```
 
-## Troubleshooting
-
-### Port already in use
-If port 2567 or 5173 is already in use:
-- **Server**: Use `PORT=<different-port> npm start`
-- **Client**: Vite will automatically try the next available port
-
-### Connection refused
-Make sure the server is running before starting the client.
-
-### Node version error
-Check your Node.js version with `node --version`. You need >= 20.9.0. Install a newer version if needed.
-
 ## Technologies Used
 
 - **Server**:
