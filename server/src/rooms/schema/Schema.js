@@ -6,15 +6,31 @@ export const Player = schema({
     cursorY: "number"
 });
 
+export const Slot = schema({
+    type: "number",
+    connected: "boolean"
+});
+
 export const PuzzlePiece = schema({
+    gridRow: "number",
+    gridCol: "number",
     positionX: "number",
     positionY: "number",
-    heldBy: "string"
+    positionZ: "number",
+    heldBy: "string",
+    connectedPieces: { array: "number" },
+
+    slotTop: Slot,
+    slotRight: Slot,
+    slotBottom: Slot,
+    slotLeft: Slot
 });
 
 
 export const PuzzleRoomState = schema({
-    players: { map: Player, default : new Map() },
-    pieces: { map : PuzzlePiece, default: new Map() }
-}
-);
+    players: { map: Player, default: new Map() },
+    pieces: { array: PuzzlePiece },
+    imageUrl: "string",
+    rows: "number",
+    cols: "number"
+});

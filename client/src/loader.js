@@ -74,9 +74,9 @@ export function loadMeshes() {
                     child.scale.y = -4 
                     uvAttribute.needsUpdate = true
                     
-                    meshMap[child.name] = { //adds the mesh to the meshMap 
+                    meshMap[child.name] = { //adds the mesh to the meshMap
                         geometry: child.geometry,
-                        slots: child.name.split(''),
+                        slots: child.name.split('').map(d => parseInt(d)),  // Convert to numbers
                         dimensions: { width, height }
                     }
                 }
@@ -87,27 +87,48 @@ export function loadMeshes() {
     })
 }
 
-export function loadTexture(imageFile) { //loads the texture from the user uploaded image 
+export function loadTexture(imageFile) {
     return new Promise((resolve) => {
         const reader = new FileReader()
-        reader.onload = (e) => { //sets up an event to trigger upon the reader reading a file 
-            const textureLoader = new THREE.TextureLoader() //loads image as a texture
+        reader.onload = (e) => {
+            const textureLoader = new THREE.TextureLoader()
             const colorTexture = textureLoader.load(e.target.result, () => {
                 colorTexture.colorSpace = THREE.SRGBColorSpace
-                const pieceMaterial = new THREE.MeshStandardMaterial({ 
-                    map: colorTexture, 
-                    roughness: 0.7, 
-                    metalness: 0.1 
+                const pieceMaterial = new THREE.MeshStandardMaterial({
+                    map: colorTexture,
+                    roughness: 0.7,
+                    metalness: 0.1
                 })
-                
+
                 const aspectRatio = colorTexture.image.width / colorTexture.image.height
                 config.aspectRatioScaleX = aspectRatio >= 1 ? aspectRatio : 1
                 config.aspectRatioScaleZ = aspectRatio <= 1 ? (1 / aspectRatio) : 1
-                
-                resolve(pieceMaterial) //returns pieceMaterial and unpauses the await function  
+
+                resolve(pieceMaterial)
             })
         }
-      reader.readAsDataURL(imageFile) //reads the file, triggering the event listener
-    
+      reader.readAsDataURL(imageFile)
+
+    })
+}
+
+export function loadTextureFromUrl(url) {
+    return new Promise((resolve) => {
+        const textureLoader = new THREE.TextureLoader()
+        const colorTexture = textureLoader.load(url, () => {
+            colorTexture.colorSpace = THREE.SRGBColorSpace
+
+            const aspectRatio = colorTexture.image.width / colorTexture.image.height
+            config.aspectRatioScaleX = aspectRatio >= 1 ? aspectRatio : 1
+            config.aspectRatioScaleZ = aspectRatio <= 1 ? (1 / aspectRatio) : 1
+
+            const material = new THREE.MeshStandardMaterial({
+                map: colorTexture,
+                roughness: 0.7,
+                metalness: 0.1
+            })
+
+            resolve(material)
+        })
     })
 }
