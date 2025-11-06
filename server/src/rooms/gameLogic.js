@@ -1,7 +1,8 @@
-import { config } from './config.js'
-import { getOpposite, getPartner, getPieceIndex } from './utils.js'
-
+import { config } from "./config.js"
+import { getOpposite, getPartner, getPieceIndex } from "./utils.js"
+//all the functions here are perfect and their working does not need to be understood even doe its lowkey unoptimal
 function moveGroup(pieces, groupIndices, deltaX, deltaZ) {
+    //updates position of each piece in a group by delta
     for (const index of groupIndices) {
         pieces[index].positionX += deltaX
         pieces[index].positionZ += deltaZ
@@ -9,28 +10,29 @@ function moveGroup(pieces, groupIndices, deltaX, deltaZ) {
 }
 
 function returnPositionalErrorAndSomeOtherStuff(piece, slotName, expectedPartner) {
+    //returns difference between a dropped piece ad where its supposed to be based on the distance from its partner. a low enough error lets you snap to
     const actualDx = expectedPartner.positionX - piece.positionX
     const actualDz = expectedPartner.positionZ - piece.positionZ
 
     let expectedDx, expectedDz
 
-    switch(slotName){
-        case 'top':
+    switch (slotName) {
+        case "top":
             expectedDx = 0
             expectedDz = -config.pieceSize.height * config.aspectRatioScaleZ
             break
 
-        case 'bottom':
+        case "bottom":
             expectedDx = 0
             expectedDz = config.pieceSize.height * config.aspectRatioScaleZ
             break
 
-        case 'left':
+        case "left":
             expectedDx = -config.pieceSize.width * config.aspectRatioScaleX
             expectedDz = 0
             break
 
-        case 'right':
+        case "right":
             expectedDx = config.pieceSize.width * config.aspectRatioScaleX
             expectedDz = 0
             break
@@ -44,16 +46,22 @@ function returnPositionalErrorAndSomeOtherStuff(piece, slotName, expectedPartner
 }
 
 function getSlot(piece, slotName) {
-    switch(slotName) {
-        case 'top': return piece.slotTop
-        case 'right': return piece.slotRight
-        case 'bottom': return piece.slotBottom
-        case 'left': return piece.slotLeft
+    //retrives slot information. previously implemented as a nested userdata thing but schemas are weird with nested objects like that and i wanted a data structure that was as similar between client and server as possible
+    switch (slotName) {
+        case "top":
+            return piece.slotTop
+        case "right":
+            return piece.slotRight
+        case "bottom":
+            return piece.slotBottom
+        case "left":
+            return piece.slotLeft
     }
 }
 
 function checkIfPieceSnaps(heldPiece, droppedGroupIndices, pieces, rows, cols) {
-    const slotNames = ['top', 'right', 'bottom', 'left']
+    //checks if pieces snap based on the error being below a threshold. its also directional
+    const slotNames = ["top", "right", "bottom", "left"]
 
     for (const checkIndex of droppedGroupIndices) {
         const checkPiece = pieces[checkIndex]
@@ -87,7 +95,8 @@ function checkIfPieceSnaps(heldPiece, droppedGroupIndices, pieces, rows, cols) {
 }
 
 function checkIfPieceConnects(pieces, groupIndices, rows, cols) {
-    const slotNames = ['top', 'right', 'bottom', 'left']
+    //checks if a dropped piece in a group is already in the correct place. threshold is a lot lower since its supposed to be zero really
+    const slotNames = ["top", "right", "bottom", "left"]
 
     for (const index of groupIndices) {
         const piece = pieces[index]
@@ -114,6 +123,7 @@ function checkIfPieceConnects(pieces, groupIndices, rows, cols) {
 }
 
 function mergeGroups(pieces, group1Indices, group2Indices) {
+    //merges groups of connected groups in eachpiece
     const mergedIndices = [...group1Indices, ...group2Indices]
 
     for (const index of mergedIndices) {
@@ -124,6 +134,7 @@ function mergeGroups(pieces, group1Indices, group2Indices) {
 }
 
 function handleSnapping(heldPieceIndex, pieces, rows, cols) {
+    //handles snapping
     const heldPiece = pieces[heldPieceIndex]
     const droppedGroupIndices = heldPiece.connectedPieces
 

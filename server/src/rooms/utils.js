@@ -1,4 +1,3 @@
-
 export function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min
 }
@@ -8,10 +7,10 @@ export function getOpposite(slot) {
     if (slot === 0) return 1
     if (slot === 2) return 2
 
-    if (slot === 'top') return 'bottom'
-    if (slot === 'bottom') return 'top'
-    if (slot === 'left') return 'right'
-    if (slot === 'right') return 'left'
+    if (slot === "top") return "bottom"
+    if (slot === "bottom") return "top"
+    if (slot === "left") return "right"
+    if (slot === "right") return "left"
 
     return slot
 }
@@ -29,15 +28,22 @@ export function getPartner(piece, slotName, pieces, rows, cols) {
     let partnerRow = piece.gridRow
     let partnerCol = piece.gridCol
 
-    switch(slotName) {
-        case 'top': partnerRow--; break
-        case 'right': partnerCol++; break
-        case 'bottom': partnerRow++; break
-        case 'left': partnerCol--; break
+    switch (slotName) {
+        case "top":
+            partnerRow--
+            break
+        case "right":
+            partnerCol++
+            break
+        case "bottom":
+            partnerRow++
+            break
+        case "left":
+            partnerCol--
+            break
     }
 
-    if (partnerRow < 0 || partnerRow >= rows ||
-        partnerCol < 0 || partnerCol >= cols) {
+    if (partnerRow < 0 || partnerRow >= rows || partnerCol < 0 || partnerCol >= cols) {
         return null
     }
 

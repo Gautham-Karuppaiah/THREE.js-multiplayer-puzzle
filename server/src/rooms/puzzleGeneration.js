@@ -1,33 +1,86 @@
-import { config } from './config.js'
-import { getRandomInt, getOpposite, getPieceIndex } from './utils.js'
-import { PuzzlePiece, Slot } from './schema/Schema.js'
+import { config } from "./config.js"
+import { getRandomInt, getOpposite, getPieceIndex } from "./utils.js"
+import { PuzzlePiece, Slot } from "./schema/Schema.js"
 const PIECE_TYPES = [
-    '0000', '0001', '0010', '0011',
-    '0100', '0101', '0110', '0111',
-    '1000', '1001', '1010', '1011',
-    '1100', '1101', '1110', '1111',
+    //exhaustive list of available piece types. 0 = innie, 2 = flat, 1 = outtie
+    "0000",
+    "0001",
+    "0010",
+    "0011",
+    "0100",
+    "0101",
+    "0110",
+    "0111",
+    "1000",
+    "1001",
+    "1010",
+    "1011",
+    "1100",
+    "1101",
+    "1110",
+    "1111",
 
-    '0002', '0012', '0020', '0021', '0022',
-    '0102', '0112', '0120', '0121', '0122',
-    '0200', '0201', '0210', '0211', '0220', '0221',
+    "0002",
+    "0012",
+    "0020",
+    "0021",
+    "0022",
+    "0102",
+    "0112",
+    "0120",
+    "0121",
+    "0122",
+    "0200",
+    "0201",
+    "0210",
+    "0211",
+    "0220",
+    "0221",
 
-    '1002', '1012', '1020', '1021', '1022',
-    '1102', '1112', '1120', '1121', '1122',
-    '1200', '1201', '1210', '1211', '1220', '1221',
+    "1002",
+    "1012",
+    "1020",
+    "1021",
+    "1022",
+    "1102",
+    "1112",
+    "1120",
+    "1121",
+    "1122",
+    "1200",
+    "1201",
+    "1210",
+    "1211",
+    "1220",
+    "1221",
 
-    '2000', '2001', '2002', '2010', '2011', '2012',
-    '2100', '2101', '2102', '2110', '2111', '2112',
-    '2200', '2201', '2210', '2211'
+    "2000",
+    "2001",
+    "2002",
+    "2010",
+    "2011",
+    "2012",
+    "2100",
+    "2101",
+    "2102",
+    "2110",
+    "2111",
+    "2112",
+    "2200",
+    "2201",
+    "2210",
+    "2211"
 ]
 
 const pieceTypeMap = {}
 for (const type of PIECE_TYPES) {
     pieceTypeMap[type] = {
-        slots: type.split('').map(d => parseInt(d))
+        slots: type.split("").map((d) => parseInt(d))
     }
 }
 
 function getValidPieceTypes(row, col, grid, gridCols, gridRows) {
+    //calculates valid piece types given constraints of grid position and neighbours
     const valid = []
     const constraints = [
         [0, 1],
@@ -81,6 +134,7 @@ function getValidPieceTypes(row, col, grid, gridCols, gridRows) {
 }
 
 export function generatePuzzlePieces(cols, rows, aspectRatioScaleX = 1, aspectRatioScaleZ = 1) {
+    //generates a puzzle by moving through cells of the grid and checking constraints and choosing a random valid piece
     const grid = []
     const pieces = []
 
@@ -93,7 +147,7 @@ export function generatePuzzlePieces(cols, rows, aspectRatioScaleX = 1, aspectRa
                 console.error(`No valid piece types for position (${i},${j})`)
             }
             const pieceType = validTypes[getRandomInt(0, validTypes.length)]
-            const slots = pieceType.split('').map(d => parseInt(d))
+            const slots = pieceType.split("").map((d) => parseInt(d))
 
             const piece = new PuzzlePiece()
             piece.gridRow = i
@@ -105,8 +159,8 @@ export function generatePuzzlePieces(cols, rows, aspectRatioScaleX = 1, aspectRa
             const puzzleWidth = cols * scaledWidth
             const puzzleHeight = rows * scaledHeight
 
-            const x = (j * scaledWidth) - (puzzleWidth / 2) + (scaledWidth / 2)
-            const z = (i * scaledHeight) - (puzzleHeight / 2) + (scaledHeight / 2)
+            const x = j * scaledWidth - puzzleWidth / 2 + scaledWidth / 2
+            const z = i * scaledHeight - puzzleHeight / 2 + scaledHeight / 2
 
             piece.positionX = x
             piece.positionY = 0

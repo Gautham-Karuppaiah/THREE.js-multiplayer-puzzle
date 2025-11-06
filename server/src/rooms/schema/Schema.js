@@ -1,15 +1,14 @@
-import { schema } from "@colyseus/schema";
-
+import { schema } from "@colyseus/schema"
 
 export const Player = schema({
     cursorX: "number",
     cursorY: "number"
-});
+})
 
 export const Slot = schema({
     type: "number",
     connected: "boolean"
-});
+})
 
 export const PuzzlePiece = schema({
     gridRow: "number",
@@ -24,8 +23,7 @@ export const PuzzlePiece = schema({
     slotRight: Slot,
     slotBottom: Slot,
     slotLeft: Slot
-});
-
+})
 
 export const PuzzleRoomState = schema({
     players: { map: Player, default: new Map() },
@@ -33,4 +31,4 @@ export const PuzzleRoomState = schema({
     imageUrl: "string",
     rows: "number",
     cols: "number"
-});
+})

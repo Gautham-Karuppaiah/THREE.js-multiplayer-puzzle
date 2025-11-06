@@ -3,6 +3,6 @@ export const config = {
     snapThreshold: 0.4,
     connectionThreshold: 0.00001,
     frustumSize: 50,
-    aspectRatioScaleX: 1,  
+    aspectRatioScaleX: 1,
     aspectRatioScaleZ: 1
 }

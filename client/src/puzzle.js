@@ -1,6 +1,6 @@
-import * as THREE from 'three'
-import { config } from './config.js'
-import { meshMap } from './loader.js'
+import * as THREE from "three"
+import { config } from "./config.js"
+import { meshMap } from "./loader.js"
 
 function updatePieceBasedOnTexture(mesh, row, col, gridRows, gridCols) {
     mesh.scale.x *= config.aspectRatioScaleX
@@ -24,7 +24,7 @@ function updatePieceBasedOnTexture(mesh, row, col, gridRows, gridCols) {
     uvAttribute.needsUpdate = true
 }
 
-export function createMeshFromPiece(piece, rows, cols, material) {
+export function createMeshFromPiece(piece, rows, cols, material, pieceId) {
     const pieceType = `${piece.slotTop.type}${piece.slotRight.type}${piece.slotBottom.type}${piece.slotLeft.type}`
 
     const template = meshMap[pieceType]
@@ -37,6 +37,7 @@ export function createMeshFromPiece(piece, rows, cols, material) {
     const mesh = new THREE.Mesh(geometry, material)
 
     mesh.userData = {
+        pieceId: pieceId,
         gridRow: piece.gridRow,
         gridCol: piece.gridCol,
         connectedPieces: [...piece.connectedPieces],
